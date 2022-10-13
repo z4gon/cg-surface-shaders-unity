@@ -23,9 +23,6 @@ Shader "Custom/1_StandardSurface"
             // Albedo comes from a texture tinted by color
             fixed4 c = tex2D (_MainTex, IN.uv_MainTex);
             o.Albedo = c.rgb;
-            o.Alpha = c.a;
-
-            // o.Albedo = 1;
         }
         ENDCG
     }
