@@ -1,37 +1,45 @@
-Shader "Custom/6_BlinnPhong_Lit"
+Shader "Custom/8_ToonOutline_Lit"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _SpecColor("Specular Color", Color) = (1,1,1,1)
-        _SpecPower("Specular Power", Range(0,1)) = 0.5
-        _Glossiness("Glossiness", Range(0,1)) = 1
+        _OutlineColor ("Outline Color", Color) = (1,1,1,1)
+        _OutlineWidth ("Outline Width", Range(0.1, 2)) = 0.2
+        _ToonShadeLevelCount ("Toon Shade Level Count", Range(1, 10)) = 4
     }
     SubShader
     {
         Tags { "RenderType"="Opaque" }
 
         CGPROGRAM
-        #pragma surface surf BlinnPhong
+        #pragma surface surf LambertToon
 
         sampler2D _MainTex;
-        float _SpecPower;
-        float _Glossiness;
-
-        // this is added automatically by Unity
-        // when setting lighting model macro to BlinnPhong
-        // fixed4 _SpecColor;
+        fixed4 _OutlineColor;
+        float _OutlineWidth;
+        int _ToonShadeLevelCount;
 
         struct Input
         {
             float2 uv_MainTex;
         };
 
+        half4 LightingLambertToon (SurfaceOutput s, half3 lightDir, half atten){
+            // dot product between normal and light vector, provide the basis for the lit shading
+            half lightInfluence = max(0, dot(s.Normal, lightDir)); // avoid negative values
+
+            half3 ramp = floor(lightInfluence * _ToonShadeLevelCount) / _ToonShadeLevelCount;
+
+            half4 color;
+            color.rgb = s.Albedo * _LightColor0.rgb * ramp * atten;
+            color.a = s.Alpha;
+
+            return color;
+        }
+
         void surf (Input IN, inout SurfaceOutput o)
         {
             o.Albedo = tex2D (_MainTex, IN.uv_MainTex).rgb;
-            o.Specular = _SpecPower;
-            o.Gloss = _Glossiness;
         }
         ENDCG
     }
