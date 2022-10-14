@@ -70,7 +70,7 @@ Shader "Custom/1_StandardSurface"
 
 ### How Lambert Lighting Works
 
-[Lighting in Unity by Ahmed Schrute](https://medium.com/shader-coding-in-unity-from-a-to-z/light-in-computer-graphics-be438e13522f)
+- [Lighting in Unity by Ahmed Schrute](https://medium.com/shader-coding-in-unity-from-a-to-z/light-in-computer-graphics-be438e13522f)
 
 ![Png](./docs/lambert.png)
 
@@ -186,7 +186,7 @@ void surf (Input IN, inout SurfaceOutput o)
 
 ### How Blinn-Phong Lighting Works
 
-[Advanced Lighting by Learn OpenGL](https://learnopengl.com/Advanced-Lighting/Advanced-Lighting)
+- [Advanced Lighting by Learn OpenGL](https://learnopengl.com/Advanced-Lighting/Advanced-Lighting)
 
 ![Png](./docs/blinn-phong.png)
 
