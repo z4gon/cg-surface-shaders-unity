@@ -26,6 +26,7 @@ Standard Surface Shaders written in Cg for Unity Built-in RP
 
 1. Implement a stripped standard surface shader.
 1. Add the compiler directive `#pragma surface surf Lambert` indicating which function will be used to generate the passes and also which lighting model to use. [See the doc](https://docs.unity3d.com/Manual/SL-SurfaceShaders.html).
+1. The `Lambert` lighting model uses the `dot` product between the `Normal` of the pixel, and the `Light` direction vector, [see reference](https://medium.com/shader-coding-in-unity-from-a-to-z/light-in-computer-graphics-be438e13522f).
 1. Use a `sampler2D _MainTex` and make sure the naming convention is followed, defining a `float2 uv_MainTex;` in the input struct.
 1. Set the `Albedo` to whatever pixel corresponds from the texture `tex2D (_MainTex, IN.uv_MainTex);`
 
@@ -62,6 +63,11 @@ Shader "Custom/1_StandardSurface"
 
 ![Gif](./docs/1.gif)
 
+### How Lambert Lighting Works
+
+[Lighting in Unity by Ahmed Schrute](https://medium.com/shader-coding-in-unity-from-a-to-z/light-in-computer-graphics-be438e13522f)
+![Png](./docs/lambert.png)
+
 ## Normal Maps
 
 > NOTE: These are also called "Bump"
@@ -97,6 +103,7 @@ o.Emission = _FresnelColor * pow(fresnel, _FresnelPower);
 
 ## Environment Mapping
 
+1. We will use a [Sky Box](https://docs.unity3d.com/Manual/skyboxes-using.html).
 1. Expose a `CUBE` property in `ShaderLab` and then bind it to a `samplerCUBE` in the `Cg` program.
 1. Use the Unity provided value `worldRefl` which represents the incoming rays from the world into the vertices.
 1. Use `tex2D` to find the texel in the cube map, and set it to the emission output.
@@ -146,6 +153,7 @@ o.Emission = texCUBE(_SkyBox, WorldReflectionVector(IN, o.Normal)).rgb;
 ## BlinnPhong Lighting
 
 1. Use the compiler directive `BlinnPhong` to set the lighting model.
+1. `BlinnPhong` uses the angle between the `viewDir` form the camera, and the reflected light direction. The reflected light is calculated by mirroring it against the normal of the pixel.
 1. Unity will define a white `_SpecColor` by default in the `Cg` program, but you need to expose it in `ShaderLab` if you want to change its color.
 
 ```c
@@ -168,3 +176,8 @@ void surf (Input IN, inout SurfaceOutput o)
 ```
 
 ![Gif](./docs/6.gif)
+
+### How Blinn-Phong Lighting Works
+
+[Advanced Lighting by Learn OpenGL](https://learnopengl.com/Advanced-Lighting/Advanced-Lighting)
+![Png](./docs/blinn-phong.png)
