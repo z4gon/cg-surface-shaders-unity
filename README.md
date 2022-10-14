@@ -18,9 +18,13 @@ Standard Surface Shaders written in Cg for Unity Built-in RP
 - [Environment Mapping](#environment-mapping)
 - [Bump Reflections](#bump-reflections)
 
-#### BlinnPhong Lighting
+#### Blinn-Phong Lighting
 
-- [BlinnPhong Lighting](#blinn-phong)
+- [Blinn-Phong](#blinn-phong)
+
+#### Custom Lighting
+
+- [Custom Lambert](#custom-lambert)
 
 ## Basic Standard Surface
 
@@ -150,10 +154,11 @@ o.Emission = texCUBE(_SkyBox, WorldReflectionVector(IN, o.Normal)).rgb;
 
 ![Gif](./docs/5.gif)
 
-## BlinnPhong Lighting
+## Blinn-Phong
 
-1. Use the compiler directive `BlinnPhong` to set the lighting model.
-1. `BlinnPhong` uses the angle between the `viewDir` form the camera, and the reflected light direction. The reflected light is calculated by mirroring it against the normal of the pixel.
+1. Use the compiler directive `Blinn-Phong` to set the lighting model.
+1. `Phong` used the angle between the `viewDir` form the camera, and the reflected light direction. The reflected light is calculated by mirroring it against the normal of the pixel.
+   1. `Blinn` later optimized this by using the median vector between the view angle and the light angle, and comparing that with the normal.
 1. Unity will define a white `_SpecColor` by default in the `Cg` program, but you need to expose it in `ShaderLab` if you want to change its color.
 
 ```c
@@ -181,3 +186,27 @@ void surf (Input IN, inout SurfaceOutput o)
 
 [Advanced Lighting by Learn OpenGL](https://learnopengl.com/Advanced-Lighting/Advanced-Lighting)
 ![Png](./docs/blinn-phong.png)
+
+## Custom Lambert
+
+1. In the standard surface shader you can change the pragma instruction to use a custom function as lighting model.
+1. Following the naming convention `LightingXXX`.
+
+```c
+#pragma surface surf MyCustomLambert
+```
+
+```c
+half4 LightingMyCustomLambert (SurfaceOutput s, half3 lightDir, half atten){
+    // dot product between normal and light vector, provide the basis for the lit shading
+    half lightInfluence = max(0, dot(s.Normal, lightDir)); // avoid negative values
+
+    half4 color;
+    color.rgb = s.Albedo * _LightColor0.rgb * lightInfluence * atten;
+    color.a = s.Alpha;
+
+    return color;
+}
+```
+
+![Gif](./docs/7.gif)
