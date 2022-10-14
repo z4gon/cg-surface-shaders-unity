@@ -14,6 +14,7 @@ Standard Surface Shaders written in Cg for Unity Built-in RP
 - [Normal Maps](#normal-maps)
 - [Fresnel](#fresnel)
 - [Environment Mapping](#environment-mapping)
+- [Bump Reflections](#bump-reflections)
 
 ## Basic Standard Surface
 
@@ -96,7 +97,9 @@ o.Emission = _FresnelColor * pow(fresnel, _FresnelPower);
 
 ```c
 _SkyBox ("Sky Box", CUBE) = "" {}
+```
 
+```c
 struct Input
 {
     float2 uv_MainTex;
@@ -111,3 +114,25 @@ void surf (Input IN, inout SurfaceOutput o)
 ```
 
 ![Gif](./docs/4.gif)
+
+## Bump Reflections
+
+1. Use a `Normal Map` texture again, in conjunction with the `Sky Map / Cube Map`.
+1. Add the macro `INTERNAL_DATA` to the input struct, so Unity adds the necessary logic/math to calculate the `worldRefl` based on the new Normals.
+1. Use `WorldReflectionVector()` (provided by Unity) to calculate the `worldRefl` given the newly calculated Normal for the pixel, based on the `Normal Map`.
+
+```c
+struct Input
+{
+    float2 uv_MainTex;
+    float2 uv_NormalMap;
+    float3 worldRefl;
+    INTERNAL_DATA
+};
+```
+
+```c
+o.Emission = texCUBE(_SkyBox, WorldReflectionVector(IN, o.Normal)).rgb;
+```
+
+![Gif](./docs/5.gif)
