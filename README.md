@@ -4,11 +4,13 @@ Standard Surface Shaders written in Cg for Unity Built-in RP
 
 ### References
 
-[Learn Unity Shaders from Scratch - Nik Lever](https://www.udemy.com/course/learn-unity-shaders-from-scratch)
+- [Learn Unity Shaders from Scratch - Nik Lever](https://www.udemy.com/course/learn-unity-shaders-from-scratch)
+- [Textures Resources](https://3dtextures.me)
 
 ## Shaders
 
 - [Basic Standard Surface](#basic-standard-surface)
+- [Normal Maps](#normal-maps)
 
 ## Screenshots
 
@@ -45,8 +47,7 @@ Shader "Custom/1_StandardSurface"
         void surf (Input IN, inout SurfaceOutput o)
         {
             // Albedo comes from a texture tinted by color
-            fixed4 c = tex2D (_MainTex, IN.uv_MainTex);
-            o.Albedo = c.rgb;
+            o.Albedo = tex2D (_MainTex, IN.uv_MainTex).rgb;
         }
         ENDCG
     }
@@ -55,3 +56,19 @@ Shader "Custom/1_StandardSurface"
 ```
 
 ![Gif](./docs/1.gif)
+
+## Normal Maps
+
+1. Use [textures](https://3dtextures.me/2018/10/09/blocks-001/) that also have available normal maps.
+1. Use a secondary `sample2D` and set it to the `Normal` property of the `SurfaceOutput` struct.
+
+```c
+void surf (Input IN, inout SurfaceOutput o)
+{
+    // Albedo comes from a texture tinted by color
+    o.Albedo = tex2D (_MainTex, IN.uv_MainTex).rgb;
+    o.Normal = tex2D(_NormalMap, IN.uv_NormalMap);
+}
+```
+
+![Gif](./docs/2.gif)
