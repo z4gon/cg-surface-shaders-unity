@@ -59,6 +59,8 @@ Shader "Custom/1_StandardSurface"
 
 ## Normal Maps
 
+> NOTE: These are also called "Bump"
+
 1. Use [textures](https://3dtextures.me/2018/10/09/blocks-001/) that also have available normal maps.
 1. Use a secondary `sample2D` and set it to the `Normal` property of the `SurfaceOutput` struct.
 
