@@ -73,8 +73,8 @@ Material:
     - _DebugSquares: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _FresnelPower: 5
-    - _FresnelWidth: 0.83
+    - _FresnelPower: 4
+    - _FresnelWidth: 1.22
     - _GlossMapScale: 1
     - _Glossiness: 0.18
     - _GlossyReflections: 1

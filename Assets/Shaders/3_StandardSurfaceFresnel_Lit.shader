@@ -6,7 +6,7 @@ Shader "Custom/3_StandardSurfaceFresnel_Lit"
         _NormalMap ("Normal Map", 2D) = "white" {}
         _FresnelColor ("Fresnel Color", Color) = (0,1,1,1)
         _FresnelWidth ("Fresnel Width", Range(0, 2)) = 0.5
-        _FresnelPower ("Fresnel Power", Range(1, 5)) = 1
+        _FresnelPower ("Fresnel Power", Range(1, 10)) = 1
     }
     SubShader
     {
