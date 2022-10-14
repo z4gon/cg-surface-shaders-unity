@@ -10,11 +10,17 @@ Standard Surface Shaders written in Cg for Unity Built-in RP
 
 ## Shaders
 
+#### Lambert Lighting
+
 - [Basic Standard Surface](#basic-standard-surface)
 - [Normal Maps](#normal-maps)
 - [Fresnel](#fresnel)
 - [Environment Mapping](#environment-mapping)
 - [Bump Reflections](#bump-reflections)
+
+#### BlinnPhong Lighting
+
+- [BlinnPhong Lighting](#blinn-phong)
 
 ## Basic Standard Surface
 
@@ -136,3 +142,29 @@ o.Emission = texCUBE(_SkyBox, WorldReflectionVector(IN, o.Normal)).rgb;
 ```
 
 ![Gif](./docs/5.gif)
+
+## BlinnPhong Lighting
+
+1. Use the compiler directive `BlinnPhong` to set the lighting model.
+1. Unity will define a white `_SpecColor` by default in the `Cg` program, but you need to expose it in `ShaderLab` if you want to change its color.
+
+```c
+#pragma surface surf BlinnPhong
+```
+
+```c
+_SpecColor("Specular Color", Color) = (1,1,1,1)
+_SpecPower("Specular Power", Range(0,1)) = 0.5
+_Glossiness("Glossiness", Range(0,1)) = 1
+```
+
+```c
+void surf (Input IN, inout SurfaceOutput o)
+{
+    o.Albedo = tex2D (_MainTex, IN.uv_MainTex).rgb;
+    o.Specular = _SpecPower;
+    o.Gloss = _Glossiness;
+}
+```
+
+![Gif](./docs/6.gif)
