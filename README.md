@@ -8,6 +8,11 @@ Standard Surface Shaders written in Cg for Unity Built-in RP
 - [Textures Resources](https://3dtextures.me)
 - [Sky Maps](https://assetstore.unity.com/packages/2d/textures-materials/sky/free-real-skies-87740)
 
+## Screenshots
+
+![Gif](./docs/4.gif)
+![Gif](./docs/8a.gif)
+
 ## Shaders
 
 #### Lambert Lighting
