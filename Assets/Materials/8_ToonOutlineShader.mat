@@ -86,7 +86,7 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Offset: 0.36
-    - _OutlineWidth: 0.000115
+    - _OutlineWidth: 0.00009
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecPower: 0.019
@@ -95,7 +95,7 @@ Material:
     - _TilingColumns: 5
     - _TilingRows: 5
     - _TimeVelocity: 1
-    - _ToonShadeLevelCount: 5.26
+    - _ToonShadeLevelCount: 6.48
     - _UVSec: 0
     - _UseTime: 1
     - _ZWrite: 1
