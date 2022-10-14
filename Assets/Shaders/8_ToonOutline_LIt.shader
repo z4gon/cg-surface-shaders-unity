@@ -4,7 +4,7 @@ Shader "Custom/8_ToonOutline_Lit"
     {
         _MainTex ("Texture", 2D) = "white" {}
         _OutlineColor ("Outline Color", Color) = (1,1,1,1)
-        _OutlineWidth ("Outline Width", Range(0.1, 2)) = 0.2
+        _OutlineWidth ("Outline Width", Range(0, 0.0002)) = 0.0001
         _ToonShadeLevelCount ("Toon Shade Level Count", Range(1, 10)) = 4
     }
     SubShader
@@ -15,8 +15,6 @@ Shader "Custom/8_ToonOutline_Lit"
         #pragma surface surf LambertToon
 
         sampler2D _MainTex;
-        fixed4 _OutlineColor;
-        float _OutlineWidth;
         int _ToonShadeLevelCount;
 
         struct Input
@@ -42,6 +40,30 @@ Shader "Custom/8_ToonOutline_Lit"
             o.Albedo = tex2D (_MainTex, IN.uv_MainTex).rgb;
         }
         ENDCG
+
+        Pass {
+            Cull Front
+
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+
+            float _OutlineWidth;
+            fixed4 _OutlineColor;
+
+            float4 vert (float4 position: POSITION, float3 normal: NORMAL) : SV_POSITION
+            {
+                position.xyz += normal * _OutlineWidth;
+                return UnityObjectToClipPos(position);
+            }
+
+            half4 frag () : SV_TARGET
+            {
+                return _OutlineColor;
+            }
+
+            ENDCG
+        }
     }
     FallBack "Diffuse"
 }

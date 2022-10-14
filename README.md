@@ -25,6 +25,7 @@ Standard Surface Shaders written in Cg for Unity Built-in RP
 #### Custom Lighting
 
 - [Custom Lambert](#custom-lambert)
+- [Toon Shading](#toon-shading)
 
 ## Basic Standard Surface
 
@@ -210,3 +211,44 @@ half4 LightingMyCustomLambert (SurfaceOutput s, half3 lightDir, half atten){
 ```
 
 ![Gif](./docs/7.gif)
+
+## Toon Shading
+
+1. Make the custom Lambert shading ramp in bands.
+1. Define another `Pass`, to expand the vertices positions and render an outline using `Cull Front`.
+
+```c
+half3 ramp = floor(lightInfluence * _ToonShadeLevelCount) / _ToonShadeLevelCount;
+
+half4 color;
+color.rgb = s.Albedo * _LightColor0.rgb * ramp * atten;
+```
+
+```c
+Pass {
+    Cull Front
+
+    CGPROGRAM
+    #pragma vertex vert
+    #pragma fragment frag
+
+    float _OutlineWidth;
+    fixed4 _OutlineColor;
+
+    float4 vert (float4 position: POSITION, float3 normal: NORMAL) : SV_POSITION
+    {
+        position.xyz += normal * _OutlineWidth;
+        return UnityObjectToClipPos(position);
+    }
+
+    half4 frag () : SV_TARGET
+    {
+        return _OutlineColor;
+    }
+
+    ENDCG
+}
+```
+
+![Gif](./docs/8a.gif)
+![Gif](./docs/8b.gif)
