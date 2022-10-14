@@ -20,7 +20,6 @@ Shader "Custom/1_StandardSurface"
 
         void surf (Input IN, inout SurfaceOutput o)
         {
-            // Albedo comes from a texture tinted by color
             o.Albedo = tex2D (_MainTex, IN.uv_MainTex).rgb;
         }
         ENDCG

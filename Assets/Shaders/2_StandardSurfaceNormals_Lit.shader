@@ -23,7 +23,6 @@ Shader "Custom/2_StandardSurfaceNormals_Lit"
 
         void surf (Input IN, inout SurfaceOutput o)
         {
-            // Albedo comes from a texture tinted by color
             o.Albedo = tex2D (_MainTex, IN.uv_MainTex).rgb;
             o.Normal = tex2D(_NormalMap, IN.uv_NormalMap);
         }
