@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: 1_SurfaceConcrete
-  m_Shader: {fileID: 4800000, guid: 5e6f15bd7ea534835bd34fb85fed9902, type: 3}
+  m_Name: 2_SurfacePlasticGreen
+  m_Shader: {fileID: 4800000, guid: 27ad98fdbe4d44b2583c2aa97c693a67, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _DEBUGGRADIENTS_ON
@@ -44,12 +44,16 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 4901d26b649e148d5860dc7b7192e8af, type: 3}
-        m_Scale: {x: 4, y: 4}
+        m_Texture: {fileID: 2800000, guid: 4e9e8d4ca31b94f60ab54475bf928dce, type: 3}
+        m_Scale: {x: 6, y: 5}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: f3873c00b35cd4aed950cc5beb5ff9cd, type: 3}
+        m_Scale: {x: 6, y: 5}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}

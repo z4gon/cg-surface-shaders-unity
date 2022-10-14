@@ -11,6 +11,7 @@ Standard Surface Shaders written in Cg for Unity Built-in RP
 
 - [Basic Standard Surface](#basic-standard-surface)
 - [Normal Maps](#normal-maps)
+- [Fresnel](#fresnel)
 
 ## Screenshots
 
@@ -72,3 +73,19 @@ void surf (Input IN, inout SurfaceOutput o)
 ```
 
 ![Gif](./docs/2.gif)
+
+## Fresnel
+
+1. Calculate the dot product between the `Normal` of the pixel, and the `viewDir` coming from the camera.
+1. The closer the angle it is to 90 degrees, the stronger the Fresnel effect will be.
+
+```c
+// fresnel
+float fresnelDot = dot(o.Normal, normalize(IN.viewDir));
+fresnelDot = saturate(fresnelDot); // clamp to 0,1
+float fresnel = max(0.0, _FresnelWidth - fresnelDot); // fresnelDot is zero when normal is 90 deg angle from view dir
+
+o.Emission = _FresnelColor * pow(fresnel, _FresnelPower);
+```
+
+![Gif](./docs/3.gif)
