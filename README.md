@@ -117,7 +117,7 @@ o.Emission = _FresnelColor * pow(fresnel, _FresnelPower);
 1. We will use a [Sky Box](https://docs.unity3d.com/Manual/skyboxes-using.html).
 1. Expose a `CUBE` property in `ShaderLab` and then bind it to a `samplerCUBE` in the `Cg` program.
 1. Use the Unity provided value `worldRefl` which represents the incoming rays from the world into the vertices.
-1. Use `tex2D` to find the texel in the cube map, and set it to the emission output.
+1. Use [texCUBE](https://developer.download.nvidia.com/cg/texCUBE.html) to find the texel in the cube map, and set it to the emission output.
 
 ```c
 _SkyBox ("Sky Box", CUBE) = "" {}
