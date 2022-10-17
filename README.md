@@ -32,6 +32,10 @@ Standard Surface Shaders written in Cg for Unity Built-in RP
 - [Custom Lambert](#custom-lambert)
 - [Toon Shading](#toon-shading)
 
+#### Standard Lighting
+
+- [Standard Lighting Shader](#standard-lighting-shader)
+
 ## Basic Standard Surface
 
 1. Implement a stripped standard surface shader.
@@ -259,3 +263,32 @@ Pass {
 
 ![Gif](./docs/8a.gif)
 ![Gif](./docs/8b.gif)
+
+## Standard Lighting Shader
+
+1. Define a Standard Surface Shader and make it use the `Standard Lighting` Model.
+1. Expose all relevant properties in ShaderLab and connect them to the `SurfaceOutputStandard` struct.
+
+```c
+#pragma surface surf Standard
+```
+
+```c
+void surf (Input IN, inout SurfaceOutputStandard o)
+{
+    o.Albedo = tex2D (_MainTex, IN.uv_MainTex).rgb;
+    o.Normal = tex2D(_NormalMap, IN.uv_NormalMap);
+    o.Metallic = _Metallic;
+    o.Smoothness = _Smoothness;
+
+    // fresnel
+    float fresnelDot = dot(o.Normal, normalize(IN.viewDir));
+    fresnelDot = saturate(fresnelDot); // clamp to 0,1
+    float fresnel = max(0.0, _FresnelWidth - fresnelDot); // fresnelDot is zero when normal is 90 deg angle from view dir
+
+    o.Emission = _FresnelColor * pow(fresnel, _FresnelPower);
+}
+}
+```
+
+![Gif](./docs/9.gif)
