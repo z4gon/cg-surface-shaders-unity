@@ -77,18 +77,18 @@ Material:
     - _DebugSquares: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _FresnelPower: 5
-    - _FresnelWidth: 0.83
+    - _FresnelPower: 6.22
+    - _FresnelWidth: 0.99
     - _GlossMapScale: 1
     - _Glossiness: 0.948
     - _GlossyReflections: 1
-    - _Metallic: 0.42
+    - _Metallic: 0.352
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Offset: 0.36
     - _OutlineWidth: 0.00009
     - _Parallax: 0.02
-    - _Smoothness: 0.993
+    - _Smoothness: 0.838
     - _SmoothnessTextureChannel: 0
     - _SpecPower: 0.019
     - _SpecularHighlights: 1
@@ -103,7 +103,7 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FresnelColor: {r: 0, g: 1, b: 1, a: 1}
+    - _FresnelColor: {r: 0, g: 0.64903307, b: 1, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

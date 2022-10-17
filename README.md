@@ -35,6 +35,7 @@ Standard Surface Shaders written in Cg for Unity Built-in RP
 #### Standard Lighting
 
 - [Standard Lighting Shader](#standard-lighting-shader)
+- [With Vertex Shader](#with-vertex-shader)
 
 ## Basic Standard Surface
 
@@ -266,7 +267,7 @@ Pass {
 
 ## Standard Lighting Shader
 
-1. Define a Standard Surface Shader and make it use the `Standard Lighting` Model.
+1. Define a Standard Surface Shader and make it use the `Standard Lighting` Model via `#pragma`.
 1. Expose all relevant properties in ShaderLab and connect them to the `SurfaceOutputStandard` struct.
 
 ```c
@@ -288,7 +289,24 @@ void surf (Input IN, inout SurfaceOutputStandard o)
 
     o.Emission = _FresnelColor * pow(fresnel, _FresnelPower);
 }
-}
 ```
 
 ![Gif](./docs/9.gif)
+
+## With Vertex Shader
+
+1. Define a vertex function in the `#pragma` along with the `surface` function and the `lighting` model.
+1. Define a vertex function that returns void, but has an `inout` argument of type `appdata_full`.
+
+```c
+#pragma surface surf Standard vertex:vert
+```
+
+```c
+void vert(inout appdata_full v)
+{
+    v.vertex.xyz += v.normal * _ExtrudeAmount;
+}
+```
+
+![Gif](./docs/10.gif)
