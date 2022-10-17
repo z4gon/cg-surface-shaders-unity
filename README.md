@@ -12,6 +12,7 @@ Standard Surface Shaders written in Cg for Unity Built-in RP
 
 ![Gif](./docs/4.gif)
 ![Gif](./docs/8a.gif)
+![Gif](./docs/9.gif)
 
 ## Shaders
 
