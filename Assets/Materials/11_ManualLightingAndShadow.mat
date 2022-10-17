@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: 10_VertexInSurface
-  m_Shader: {fileID: 4800000, guid: 23c420d93c62c4cc7aa54ad466555575, type: 3}
+  m_Name: 11_ManualLightingAndShadow
+  m_Shader: {fileID: 4800000, guid: b6e594c139955427bb848882564863b2, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _DEBUGGRADIENTS_ON
@@ -44,7 +44,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: e1b90ccd83dfb40bc95a8fad5c1730b6, type: 3}
+        m_Texture: {fileID: 10307, guid: 0000000000000000f000000000000000, type: 0}
         m_Scale: {x: 18, y: 4}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -52,7 +52,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: f3873c00b35cd4aed950cc5beb5ff9cd, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 18, y: 4}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
