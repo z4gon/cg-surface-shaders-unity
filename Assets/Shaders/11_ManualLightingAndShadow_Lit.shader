@@ -3,7 +3,6 @@ Shader "Custom/11_ManualLightingAndShadow_Lit"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _NormalMap ("Normal Map", 2D) = "white" {}
     }
     SubShader
     {
@@ -22,7 +21,6 @@ Shader "Custom/11_ManualLightingAndShadow_Lit"
             sampler2D _MainTex;
             sampler2D _NormalMap;
             float4 _MainTex_ST;
-            float4 _NormalMap_ST;
 
             struct v2f
             {
@@ -55,9 +53,6 @@ Shader "Custom/11_ManualLightingAndShadow_Lit"
             {
                 // sample the texture
                 fixed4 color = tex2D(_MainTex, i.uv);
-                // color * i.diffuse;
-
-                // fixed4 normal = tex2D(_NormalMap, i.uv);
 
                 return color * i.diffuse;
             }
