@@ -27,6 +27,7 @@ Shader "Custom/11_ManualLightingAndShadow_Lit"
                 float2 uv : TEXCOORD0;
                 float4 position : SV_POSITION;
                 fixed4 diffuse: COLOR0;
+                fixed3 ambient: COLOR1;
             };
 
             v2f vert (appdata_base v)
@@ -36,7 +37,7 @@ Shader "Custom/11_ManualLightingAndShadow_Lit"
                 OUT.position = UnityObjectToClipPos(v.vertex);
                 OUT.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
 
-                // calculate Lambert lighting
+                // calculate Lambert lighting -----------------------------------------------------------
                 float3 lightDirection = _WorldSpaceLightPos0.xyz;
 
                 half3 worldNormal = UnityObjectToWorldNormal(v.normal);
@@ -46,6 +47,9 @@ Shader "Custom/11_ManualLightingAndShadow_Lit"
 
                 OUT.diffuse = lightInfluence * _LightColor0;
 
+                // calculate ambient illumination -------------------------------------------------------
+                OUT.ambient = ShadeSH9(half4(worldNormal, 1));
+
                 return OUT;
             }
 
@@ -54,7 +58,11 @@ Shader "Custom/11_ManualLightingAndShadow_Lit"
                 // sample the texture
                 fixed4 color = tex2D(_MainTex, i.uv);
 
-                return color * i.diffuse;
+                // combine lighting and shadows
+                fixed shadow = 1;
+                fixed3 lighting = i.diffuse * shadow + i.ambient;
+
+                return fixed4(color * lighting, 1);
             }
             ENDCG
         }
