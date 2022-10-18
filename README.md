@@ -7,6 +7,7 @@ Standard Surface Shaders written in Cg for Unity Built-in RP
 - [Learn Unity Shaders from Scratch - Nik Lever](https://www.udemy.com/course/learn-unity-shaders-from-scratch)
 - [Textures Resources](https://3dtextures.me)
 - [Sky Maps](https://assetstore.unity.com/packages/2d/textures-materials/sky/free-real-skies-87740)
+- [Custom shader fundamentals](https://docs.unity3d.com/Manual/SL-VertexFragmentShaderExamples.html)
 
 ## Screenshots
 
@@ -37,6 +38,10 @@ Standard Surface Shaders written in Cg for Unity Built-in RP
 
 - [Standard Lighting Shader](#standard-lighting-shader)
 - [With Vertex Shader](#with-vertex-shader)
+
+#### Manual Lighting and Shadow
+
+- [Manual Light Shadow](#manual-light-shadow)
 
 ## Basic Standard Surface
 
@@ -311,3 +316,76 @@ void vert(inout appdata_full v)
 ```
 
 ![Gif](./docs/10.gif)
+
+## Manual Light Shadow
+
+- [Custom shader fundamentals](https://docs.unity3d.com/Manual/SL-VertexFragmentShaderExamples.html)
+
+1. This will implement lighting and shadow by hand, starting off from an unlit shader.
+1. Use `"LightMode"="ForwardBase"` and include files to use macros `Lighting.cginc` and `AutoLight.cginc`.
+1. Define macros for receiving shadows `SHADOW_COORDS()`, `TRANSFER_SHADOW()` and `SHADOW_ATTENUATION()`.
+1. In a second pass, define macros for casting shadows `V2F_SHADOW_CASTER`, `TRANSFER_SHADOW_CASTER_NORMALOFFSET()` and `SHADOW_CASTER_FRAGMENT()`.
+
+```c
+Tags { "LightMode"="ForwardBase" }
+
+Pass
+{
+    CGPROGRAM
+    #pragma multi_compile_fwdbase nolightmap nodirlightmap nodynlightmap novertexlight
+
+    #include "UnityCG.cginc"
+    #include "Lighting.cginc"
+    #include "AutoLight.cginc"
+
+    struct v2f
+    {
+        SHADOW_COORDS(1)
+    };
+
+    v2f vert (appdata_base v)
+    {
+        // calculate ambient illumination -------------------------------------------------------
+        OUT.ambient = ShadeSH9(half4(worldNormal, 1));
+
+        // calculate shadows --------------------------------------------------------------------
+        TRANSFER_SHADOW(OUT)
+    }
+
+    fixed4 frag (v2f IN) : SV_Target
+    {
+        // combine lighting and shadows
+        fixed shadow = SHADOW_ATTENUATION(IN);
+        fixed3 lighting = IN.diff * shadow + IN.ambient;
+    }
+    ENDCG
+}
+```
+
+```c
+Pass
+{
+    Tags {"LightMode"="ShadowCaster"}
+
+    CGPROGRAM
+    #pragma multi_compile_shadowcaster
+    #include "UnityCG.cginc"
+
+    struct v2f {
+        V2F_SHADOW_CASTER;
+    };
+
+    v2f vert(appdata_base v)
+    {
+        TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)
+    }
+
+    float4 frag(v2f i) : SV_Target
+    {
+        SHADOW_CASTER_FRAGMENT(i)
+    }
+    ENDCG
+}
+```
+
+![Gif](./docs/11.png)
