@@ -6,7 +6,7 @@ Shader "Custom/11_ManualLightingAndShadow_Lit"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "LightMode"="ForwardBase" }
         LOD 100
 
         Pass
@@ -14,9 +14,13 @@ Shader "Custom/11_ManualLightingAndShadow_Lit"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            // compile shader into multiple variants, with and without shadows
+            // (we don't care about any lightmaps yet, so skip these variants)
+            #pragma multi_compile_fwdbase nolightmap nodirlightmap nodynlightmap novertexlight
 
             #include "UnityCG.cginc"
-            #include "UnityLightingCommon.cginc"
+            #include "Lighting.cginc"
+            #include "AutoLight.cginc"
 
             sampler2D _MainTex;
             sampler2D _NormalMap;
@@ -25,8 +29,9 @@ Shader "Custom/11_ManualLightingAndShadow_Lit"
             struct v2f
             {
                 float2 uv : TEXCOORD0;
-                float4 position : SV_POSITION;
-                fixed4 diffuse: COLOR0;
+                SHADOW_COORDS(1)
+                float4 pos : SV_POSITION;
+                fixed3 diff: COLOR0;
                 fixed3 ambient: COLOR1;
             };
 
@@ -34,7 +39,7 @@ Shader "Custom/11_ManualLightingAndShadow_Lit"
             {
                 v2f OUT;
 
-                OUT.position = UnityObjectToClipPos(v.vertex);
+                OUT.pos = UnityObjectToClipPos(v.vertex);
                 OUT.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
 
                 // calculate Lambert lighting -----------------------------------------------------------
@@ -45,22 +50,26 @@ Shader "Custom/11_ManualLightingAndShadow_Lit"
                 // dot product between normal and light vector, provide the basis for the lit shading
                 half lightInfluence = max(0, dot(worldNormal, lightDirection)); // avoid negative values
 
-                OUT.diffuse = lightInfluence * _LightColor0;
+                OUT.diff = lightInfluence * _LightColor0.rgb;
 
                 // calculate ambient illumination -------------------------------------------------------
                 OUT.ambient = ShadeSH9(half4(worldNormal, 1));
 
+                // calculate shadows --------------------------------------------------------------------
+                // compute shadows data
+                TRANSFER_SHADOW(OUT)
+
                 return OUT;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            fixed4 frag (v2f IN) : SV_Target
             {
                 // sample the texture
-                fixed4 color = tex2D(_MainTex, i.uv);
+                fixed4 color = tex2D(_MainTex, IN.uv);
 
                 // combine lighting and shadows
-                fixed shadow = 1;
-                fixed3 lighting = i.diffuse * shadow + i.ambient;
+                fixed shadow = SHADOW_ATTENUATION(IN);
+                fixed3 lighting = IN.diff * shadow + IN.ambient;
 
                 return fixed4(color * lighting, 1);
             }
